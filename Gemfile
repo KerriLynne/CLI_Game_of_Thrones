@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in game_of_thrones.gemspec
-gemspec
+gem "pry", "~> 0.13.1"
 
 gem "rake", "~> 12.0"
+
+gem 'game_of_thrones_api'

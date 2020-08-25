@@ -1,0 +1,17 @@
+how many classes?
+
+What is your app going to do?
+
+GOT app with GOT API
+
+//I'm going to welcome the user
+-offer list of options and have the user choose which option
+-I think return to the terminal the list of their choice
+-Then ask for an input of what they want next
+-Show some information about THAT specific option
+
+
+Classes:
+-CLI class- dealing with things showing into the terminal
+-API class- Deal with all API things (could also be a scraper class)
+-GOT class- Deal with all GOT data
