@@ -23,10 +23,5 @@ class API
         @books[number.to_i]  
     end 
 
-
-
-
-
-
 end
 

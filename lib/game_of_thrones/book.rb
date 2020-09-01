@@ -12,11 +12,4 @@ class Book
 
 
 
-
-
-
-
-
-
-
 end
