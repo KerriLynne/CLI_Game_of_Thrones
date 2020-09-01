@@ -54,26 +54,26 @@ class CLI
 
     def display_book_info(book_number) 
         book = @api.get_book(book_number) 
-        character_numbers = get_character_numbers(book["povCharacters"])
-        characters = @api.get_all_characters
+        character_numbers = get_character_numbers(book.pov_characters)
+        characters = @api.characters
     
         puts "Book Name: ".red.bold
-        puts book["name"]
+        puts book.name
         puts ""
         puts "Characters: ".blue.bold
         character_numbers.each {|character_number| puts characters[character_number -1]["name"]}
         puts ""
         puts "Author(s): ".cyan.bold
-        puts book["authors"]
+        puts book.authors
         puts ""
         puts "Release Date: ".yellow.bold
-        puts Date.parse(book["released"])
+        puts Date.parse(book.released)
         puts ""  
         puts "Publisher: ".green.bold
-        puts book["publisher"]
+        puts book.publisher
         puts ""
         puts "Media Type: ".magenta.bold
-        puts book["mediaType"]
+        puts book.mediaType
         puts ""
     end    
 
@@ -94,11 +94,11 @@ class CLI
 
     def display_options(book_number) 
         book = @api.get_book(book_number) 
-        character_numbers = get_character_numbers(book["povCharacters"])
-        characters = @api.get_all_characters
+        character_numbers = get_character_numbers(book.pov_characters)
+        characters = @api.characters
 
 
-        puts "What option would you like displayed for #{book["name"]}? Type list to see the list of books again.".yellow.bold  
+        puts "What option would you like displayed for #{book.name}? Type list to see the list of books again.".yellow.bold  
         menu
         input = gets.strip.downcase
 
@@ -110,22 +110,22 @@ class CLI
             display_options(book_number) 
         elsif input == "author" || input == "authors"
             puts "Author(s): ".blue.bold
-            puts book["authors"]
+            puts book.authors
             puts ""
             display_options(book_number) 
         elsif input == "release" || input == "released" || input == "release date" 
             puts "Release Date".blue.bold
-            puts Date.parse(book["released"])
+            puts Date.parse(book.released)
             puts ""  
             display_options(book_number)  
         elsif input == "publisher" || input == "publish" || input == "p" 
             puts "Publisher".blue.bold
-            puts book["publisher"]
+            puts book.publisher
             puts ""  
             display_options(book_number)  
         elsif input == "media type" || input == "media"
             puts "Media Type".blue.bold
-            puts book["mediaType"]
+            puts book.mediaType
             puts ""  
             display_options(book_number)  
         elsif input == "all info" || input == "all" || input == "info"

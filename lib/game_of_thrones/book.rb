@@ -1,28 +1,22 @@
 class Book
-    def initialize
-        @name = name
-        @characters = characters
-        @author = author
-        @release_date = release_date
-        @publisher = publisher
-        @media_type = media_type
-        @books = GameOfThronesApi.get_books
-        book.new
+    attr_reader :name, :authors, :released, :publisher, :mediaType, :pov_characters
+
+    def initialize(book)
+        @name = book["name"]
+        @authors = book["authors"]
+        @released = book["released"]
+        @publisher = book["publisher"]
+        @mediaType = book["mediaType"]
+        @pov_characters = book["povCharacters"]
     end
 
-    def self.get_books
-        @books.map |info| do 
-            Book.new(info)
-        end 
-    end
-    
-    def book_names
-        @books.map{|book| book["name"]}
-    end
 
-    def get_book(number)
-        @books[number.to_i]  
-    end 
+
+
+
+
+
+
 
 
 end
