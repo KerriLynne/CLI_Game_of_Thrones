@@ -1,16 +1,21 @@
 class API
 
-
-    def self.book_names
-        GameOfThronesApi.get_books.map{|book| book["name"]}
-    end
-
-    def self.get_book(number)
-        GameOfThronesApi.get_books[number.to_i]  
+    def initialize
+        @books = GameOfThronesApi.get_books
+        @characters = GameOfThronesApi.get_characters
     end    
 
-    def self.get_all_characters
-        GameOfThronesApi.get_characters
+
+    def book_names
+        @books.map{|book| book["name"]}
+    end
+
+    def get_book(number)
+        @books[number.to_i]  
+    end    
+
+    def get_all_characters
+        @characters
     end   
 
 

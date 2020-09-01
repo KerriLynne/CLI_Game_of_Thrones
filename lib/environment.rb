@@ -3,6 +3,7 @@
 require "./lib/game_of_thrones/cli"
 require "./lib/game_of_thrones/api"
 require "./lib/game_of_thrones/got"
+require "./lib/game_of_thrones/book"
 
 require "pry"
 

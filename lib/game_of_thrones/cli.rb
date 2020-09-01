@@ -1,7 +1,10 @@
 class CLI
- 
 
-    def self.start
+    def initialize
+        @api = API.new
+    end
+
+    def start
         system("clear")
         puts "Welcome to A Song of Ice and Fire (GOT) books app!".cyan.bold  
         input = nil
@@ -20,23 +23,22 @@ class CLI
         end    
     end
 
-    def self.list_books
+    def list_books
         input = nil
         puts "List of all GOT books:".green.bold
-        API.book_names.each.with_index(1) do |book, i|
+        @api.book_names.each.with_index(1) do |book, i|
             puts "#{i}. #{book}"
         end  
         pick_a_book
     end   
 
-
-    def self.pick_a_book
+    def pick_a_book
         input = nil
         while input != "exit"
             puts "Type the number of the book you want to explore! Or type exit.".yellow.bold 
             input = gets.strip.downcase
 
-            if input.to_i > 0
+            if (1..12).include?(input.to_i)
                 system("clear")  
                 getting_info
                 display_options(input.to_i-1)
@@ -50,16 +52,16 @@ class CLI
         end 
     end 
 
-    def self.display_book_info(number) 
-        book = API.get_book(number) 
+    def display_book_info(book_number) 
+        book = @api.get_book(book_number) 
         character_numbers = get_character_numbers(book["povCharacters"])
-        characters = API.get_all_characters
+        characters = @api.get_all_characters
     
         puts "Book Name: ".red.bold
         puts book["name"]
         puts ""
         puts "Characters: ".blue.bold
-        character_numbers.each {|number| puts characters[number -1]["name"]}
+        character_numbers.each {|character_number| puts characters[character_number -1]["name"]}
         puts ""
         puts "Author(s): ".cyan.bold
         puts book["authors"]
@@ -75,73 +77,76 @@ class CLI
         puts ""
     end    
 
-
-    def self.get_character_numbers(characters)
+    def get_character_numbers(characters)
         characters.map {|character| character.split("/")[-1].to_i}
     end 
 
+    def menu
+        puts "Characters".white.bold
+        puts "Author(s)".white.bold
+        puts "Release Date".white.bold
+        puts "Publisher".white.bold
+        puts "Media Type".white.bold
+        puts "All info".white.bold
+        puts "Back to main menu".white.bold
+    end    
 
-    def self.display_options(number) 
-        book = API.get_book(number) 
+
+    def display_options(book_number) 
+        book = @api.get_book(book_number) 
         character_numbers = get_character_numbers(book["povCharacters"])
-        characters = API.get_all_characters
+        characters = @api.get_all_characters
 
 
-            puts "What option would you like displayed for #{book["name"]}? Type list to see the list of books again.".yellow.bold  #was input
-            puts "Characters".white.bold
-            puts "Author(s)".white.bold
-            puts "Release Date".white.bold
-            puts "Publisher".white.bold
-            puts "Media Type".white.bold
-            puts "All info".white.bold
-            puts "Back to main menu".white.bold
-            input = gets.strip.downcase
+        puts "What option would you like displayed for #{book["name"]}? Type list to see the list of books again.".yellow.bold  
+        menu
+        input = gets.strip.downcase
 
-            system("clear")
-            if input == "character" || input == "characters"
-                puts"Characters: ".blue.bold
-                character_numbers.each {|number| puts characters[number -1]["name"]} 
-                puts ""
-                display_options(number) 
-            elsif input == "author" || input == "authors"
-                puts "Author(s): ".blue.bold
-                puts book["authors"]
-                puts ""
-                display_options(number) 
-            elsif input == "release" || input == "released" || input == "release date" 
-                puts "Release Date".blue.bold
-                puts Date.parse(book["released"])
-                puts ""  
-                display_options(number)  
-            elsif input == "publisher" || input == "publish" || input == "p" 
-                puts "Publisher".blue.bold
-                puts book["publisher"]
-                puts ""  
-                display_options(number)  
-            elsif input == "media type" || input == "media"
-                puts "Media Type".blue.bold
-                puts book["mediaType"]
-                puts ""  
-                display_options(number)  
-            elsif input == "all info" || input == "all" || input == "info"
-                puts ""
-                display_book_info(number) 
-                puts "Pick another book you want to get info on!".cyan.bold
-                list_books
-            elsif input == "list" 
-                list_books
-            elsif input == "back to main menu" || input == "main menu" || input == "menu"
-                puts ""
-                start
-            elsif input == "exit"
-                puts "Please come back for more infomation on A Song of Ice and Fire books. Goodbye!".yellow.on_blue.bold
-            else
-                puts "Not sure what you're looking for...".blue.bold
-                pick_a_book
-            end     
+        system("clear")
+        if input == "character" || input == "characters"
+            puts"Characters: ".blue.bold
+            character_numbers.each {|character_number| puts characters[character_number -1]["name"]} 
+            puts ""
+            display_options(book_number) 
+        elsif input == "author" || input == "authors"
+            puts "Author(s): ".blue.bold
+            puts book["authors"]
+            puts ""
+            display_options(book_number) 
+        elsif input == "release" || input == "released" || input == "release date" 
+            puts "Release Date".blue.bold
+            puts Date.parse(book["released"])
+            puts ""  
+            display_options(book_number)  
+        elsif input == "publisher" || input == "publish" || input == "p" 
+            puts "Publisher".blue.bold
+            puts book["publisher"]
+            puts ""  
+            display_options(book_number)  
+        elsif input == "media type" || input == "media"
+            puts "Media Type".blue.bold
+            puts book["mediaType"]
+            puts ""  
+            display_options(book_number)  
+        elsif input == "all info" || input == "all" || input == "info"
+            puts ""
+            display_book_info(book_number) 
+            puts "Pick another book you want to get info on!".cyan.bold
+            list_books
+        elsif input == "list" 
+            list_books
+        elsif input == "back to main menu" || input == "main menu" || input == "menu"
+            puts ""
+            start
+        elsif input == "exit"
+            puts "Please come back for more infomation on A Song of Ice and Fire books. Goodbye!".yellow.on_blue.bold
+        else
+            puts "Not sure what you're looking for...".blue.bold
+            pick_a_book
+        end     
     end           
 
-    def self.getting_info
+    def getting_info
         puts "getting your information!".magenta.bold
         3.times do 
             sleep(0.25)
@@ -156,7 +161,7 @@ class CLI
     end    
       
 
-    class String
+    module Color
         def black;          "\e[30m#{self}\e[0m" end
         def red;            "\e[31m#{self}\e[0m" end
         def green;          "\e[32m#{self}\e[0m" end
@@ -181,6 +186,7 @@ class CLI
         def blink;          "\e[5m#{self}\e[25m" end
         def reverse_color;  "\e[7m#{self}\e[27m" end
     end
+
 
 
 end    
